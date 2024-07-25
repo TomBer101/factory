@@ -20,5 +20,6 @@ const addEmployee = async (req, res) => {
 }
 
 module.exports = {
-    getAllEmployees
+    getAllEmployees,
+    addEmployee,
 }
