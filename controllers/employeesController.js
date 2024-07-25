@@ -19,7 +19,20 @@ const addEmployee = async (req, res) => {
     }
 }
 
+const updateEmployee = async (req, res) => {
+    try {
+        const {employeeId} = req.params;
+        const {updatedData} = req.body;
+
+        const updatedEmployee = await  employeesService.updateEmployee(employeeId, updatedData)
+        res.status(200).json({updatedEmployee})
+    } catch (err) {
+        res.status(500).json({message: 'Internal server error'})
+    }
+}
+
 module.exports = {
     getAllEmployees,
     addEmployee,
+    updateEmployee,
 }

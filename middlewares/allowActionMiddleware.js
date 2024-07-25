@@ -16,12 +16,12 @@ const actionMiddleware = async (req, res, next) => {
             } else {
                 userEntity.currentActionsAmount = 1;
                 await userEntity.save();
-                next(req)
+                next()
             }
         } else {
             userEntity.currentActionsAmount += 1;
             await userEntity.save();
-            next (req)
+            next()
         }
     } catch (err) {
         console.error(`There was an error in action middlware for user ${user.userName}: `, err)

@@ -47,13 +47,13 @@ const getAllEmployees = async () => {
     }
 }
 
-const addEmployee = async ({firstName, lastName, departmentId}) => {
+const addEmployee = async (employeeInfo) => {
     try {
         const newEmployee = new Employee({
-            departmentId: departmentId,
-            firstName: firstName,
-            lastName: lastName,
-            startWorkYear: new Date().getFullYear
+            departmentId: employeeInfo.departmentId,
+            firstName: employeeInfo.firstName,
+            lastName: employeeInfo.lastName,
+            startWorkYear: new Date().getFullYear()
         })
 
         const savedEmployee = await newEmployee.save();
@@ -64,7 +64,18 @@ const addEmployee = async ({firstName, lastName, departmentId}) => {
     }
 }
 
+const updateEmployee = async (employeeId, updatedData) => {
+    try {
+        const updatedEmployee = await Employee.findOneAndUpdate({_id: employeeId}, updatedData);
+        return updatedEmployee
+    } catch (err) {
+        console.error('Error updateing employee: ', err)
+        throw new Error('Coulnt update the chosen employee...');
+    }
+}
+
 module.exports = {
     getAllEmployees,
-    addEmployee
+    addEmployee,
+    updateEmployee,
 }
