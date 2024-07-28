@@ -15,14 +15,15 @@ const actionMiddleware = async (req, res, next) => {
                 res.status(403).json({message: 'You have reached your limit of actions. Wait :)'})
             } else {
                 userEntity.currentActionsAmount = 1;
-                await userEntity.save();
-                next()
             }
         } else {
             userEntity.currentActionsAmount += 1;
-            await userEntity.save();
-            next()
         }
+
+        await userEntity.save();
+        req.maxActions = userEntity.numOfActions;
+        req.currentActionsAmount = userEntity.currentActionsAmount
+        next()
     } catch (err) {
         console.error(`There was an error in action middlware for user ${user.userName}: `, err)
         res.status(500).json({message: "Internal server error"})
