@@ -14,7 +14,7 @@ configDb.connectDB().then(() => console.log('Connecte to Mongo DB')).catch(() =>
 
 app.use(express.json());
 app.use('/api/auth', authRoutes)
-app.use('/api/users', employeesRout)
+app.use('/api/employees', employeesRout)
 app.use('/api/departments', departmentsRoute)
 
 app.listen(PORT, () => {

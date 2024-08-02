@@ -1,4 +1,5 @@
 const Employee = require('../models/employeeModel');
+const Shift = require('../models/shiftModel');
 
 const getAllEmployees = async () => {
     try {
@@ -74,8 +75,20 @@ const updateEmployee = async (employeeId, updatedData) => {
     }
 }
 
+const deleteEmployee = async (employeeId) => {
+    try {
+        const deletedEmployee = await Employee.deleteOne({_id: employeeId});
+        const deletedShifte = await Shift.deleteMany({employee: employeeId});
+
+    } catch (err) {
+        console.error('Error deleting users data: ', err);
+        throw new Error(`Failed deleteng user: ${employeeId}. `)
+    }
+}
+
 module.exports = {
     getAllEmployees,
     addEmployee,
     updateEmployee,
+    deleteEmployee
 }

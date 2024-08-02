@@ -31,8 +31,19 @@ const updateEmployee = async (req, res) => {
     }
 }
 
+const deleteEmployee = async (req, res) => {
+    try {
+        const { employeeId } = req.params;
+        await employeesService.deleteEmployee(employeeId);
+        res.status(200).json({message: `Employee ${employeeId} was deleted.`})
+    } catch (err) {
+        res.status(500).json({message: 'Internal Server Error.'})
+    }
+}
+
 module.exports = {
     getAllEmployees,
     addEmployee,
     updateEmployee,
+    deleteEmployee
 }
