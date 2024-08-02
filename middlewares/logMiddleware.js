@@ -31,7 +31,7 @@ const logAction = (userId, maxActions, actionAllowd) => {
             }
         }
 
-        logData.actions.push(logEntry)
+        logData.push(logEntry)
 
          fs.writeFile(logFilePath, JSON.stringify(logData, null, 2), (writeErr) => {
             if (writeErr) {
@@ -51,7 +51,7 @@ const loggerMiddlware = (req, res, next) => {
     res.send = function (body) {
         const userId = req.user.userId;
         const maxActions =  req.maxActions;
-        const currentActions = req.currentActions;
+        const currentActions = req.currentActionsAmount;
 
         logAction(userId, maxActions,currentActions);
         return originalSend.apply(this, arguments)
