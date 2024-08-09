@@ -11,6 +11,17 @@ const getAllDeparments = async (req, res) => {
     }
 }
 
+const addDepartment = async (req, res) => {
+    try {
+        const newDepartmentInfo = req.body.newDepartmentInfo;
+        const newDepartment = departmentsService.addDepartment(newDepartmentInfo);
+        res.status(200).json(newDepartment);
+    } catch (err) {
+        res.status(500).json({message: err.message})
+    }
+}
+
 module.exports = {
     getAllDeparments,
+    addDepartment,
 }

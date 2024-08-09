@@ -56,6 +56,22 @@ const getAllDepartment = async (fields) => {
     }
 }
 
+const addDepartment = async (departmentInfo) => {
+    try {
+        const newDepartment = new Department({
+            name: departmentInfo.name,
+            manager: departmentInfo.manager
+        })
+
+        const savedDepartment = await newDepartment.save();
+        return savedDepartment;
+    } catch (err) {
+        console.error('Error adding new department: ', err)
+        throw new Error('There was an error saving new department.')
+    }
+}
+
 module.exports = {
     getAllDepartment,
+    addDepartment,
 }
