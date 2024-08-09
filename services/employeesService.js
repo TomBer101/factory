@@ -75,6 +75,7 @@ const updateEmployee = async (employeeId, updatedData) => {
     }
 }
 
+//TODO : change to work with employees array
 const deleteEmployee = async (employeeId) => {
     try {
         const deletedEmployee = await Employee.deleteOne({_id: employeeId});

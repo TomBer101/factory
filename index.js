@@ -7,6 +7,7 @@ const configDb = require('./mongoDB/config')
 const authRoutes = require('./routes/authRouter')
 const employeesRout = require('./routes/employeesRouter');
 const departmentsRoute = require('./routes/departmentRouter');
+const shiftsRouter = require('./routes/shiftsRoter')
 
 const PORT = 8000;
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes)
 app.use('/api/employees', employeesRout)
 app.use('/api/departments', departmentsRoute)
+app.use('/api/shifts', shiftsRouter)
 
 app.listen(PORT, () => {
     console.log(`Server is listening on port: ${PORT}`)
