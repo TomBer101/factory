@@ -11,6 +11,20 @@ const updateUser = async (userId, updates) => {
     }
 }
 
+const getAllUsers = async () => {
+    try {
+        const users = await User.find({}, {
+            currentActionsAmount,
+            fullName,
+            numOfActions
+        })
+    } catch (err) {
+        console.error('Error fetching all employees: ', err)
+        throw new Error('Error fetching all users.')
+    }
+}
+
 module.exports = {
     updateUser,
+    getAllUsers,
 }
