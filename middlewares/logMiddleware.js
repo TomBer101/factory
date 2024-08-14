@@ -5,7 +5,7 @@ const fs = require('fs')
 const logFilePath = path.join(__dirname, 'actions_log.json')
 
 if(!fs.existsSync(logFilePath)) {
-    JSFile.writeFileSync(logFilePath, [])
+    JSFile.writeFileSync(logFilePath, {actions: []})
 }
 
 const logAction = (userId, maxActions, actionAllowd) => {
@@ -31,7 +31,7 @@ const logAction = (userId, maxActions, actionAllowd) => {
             }
         }
 
-        logData.push(logEntry)
+        logData.actions.push(logEntry)
 
          fs.writeFile(logFilePath, JSON.stringify(logData, null, 2), (writeErr) => {
             if (writeErr) {
