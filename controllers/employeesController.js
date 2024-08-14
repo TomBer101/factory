@@ -2,7 +2,9 @@ const employeesService = require('../services/employeesService');
 
 const getAllEmployees = async (req, res) => {
     try {
-        const employees = await employeesService.getAllEmployees()
+        const { departmentId } = req.query;
+        
+        const employees = await employeesService.getAllEmployees(departmentId)
         res.status(200).json({employees})
     } catch (err) {
         res.status(400).json({message: err.message})

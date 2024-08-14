@@ -1,9 +1,14 @@
+const mongoose = require('mongoose')
+
 const Employee = require('../models/employeeModel');
 const Shift = require('../models/shiftModel');
 
-const getAllEmployees = async () => {
+const getAllEmployees = async (departmentId) => {
     try {
+        const matchStage = departmentId ? { departmentId: new mongoose.Types.ObjectId(departmentId) } : {};
+
         const employees = await Employee.aggregate([
+            { $match: matchStage },
             {
                 $lookup: {
                     from: 'departments',
@@ -24,7 +29,7 @@ const getAllEmployees = async () => {
             {
                 $project: {
                     _id: 1,
-                    firstname: 1,
+                    firstName: 1,
                     lastName: 1,
                     startWorkYear: 1,
                     department: {
