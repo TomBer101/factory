@@ -72,7 +72,7 @@ const addEmployee = async (employeeInfo) => {
 
 const updateEmployee = async (employeeId, updatedData) => {
     try {
-        const updatedEmployee = await Employee.findOneAndUpdate({_id: employeeId}, updatedData);
+        const updatedEmployee = await Employee.findOneAndUpdate({_id: employeeId}, updatedData, {new: true});
         return updatedEmployee
     } catch (err) {
         console.error('Error updateing employee: ', err)
@@ -80,17 +80,28 @@ const updateEmployee = async (employeeId, updatedData) => {
     }
 }
 
-//TODO : change to work with employees array
+
 const deleteEmployee = async (employeeId) => {
     try {
-        const deletedEmployee = await Employee.deleteOne({_id: employeeId});
-        const deletedShifte = await Shift.deleteMany({employee: employeeId});
+        // Remove the employee from all shifts
+        await Shift.updateMany(
+            { employees: employeeId },
+            { $pull: { employees: employeeId } }
+        );
 
+        // Delete the employee document
+        const deletedEmployee = await Employee.deleteOne({ _id: employeeId });
+
+        if (deletedEmployee.deletedCount === 0) {
+            throw new Error(`Employee with ID ${employeeId} not found.`);
+        }
+
+        console.log(`Employee with ID ${employeeId} and their associated shifts have been updated.`);
     } catch (err) {
-        console.error('Error deleting users data: ', err);
-        throw new Error(`Failed deleteng user: ${employeeId}. `)
+        console.error('Error deleting employee and updating shifts: ', err);
+        throw new Error(`Failed to delete employee: ${employeeId}.`);
     }
-}
+};
 
 module.exports = {
     getAllEmployees,
