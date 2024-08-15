@@ -1,5 +1,7 @@
 const Department = require('../models/departmentModal');
 const Employee = require('../models/employeeModel');
+const Shift = require('../models/shiftModel')
+const mongoose = require('mongoose');
 
 const getAllDepartment = async (fields) => {
     try {
@@ -71,7 +73,54 @@ const addDepartment = async (departmentInfo) => {
     }
 }
 
+const updateDepartment = async (departmentId, updatedData) => {
+    try {
+        const updatedDepartment = await Department.findByIdAndUpdate(departmentId, updatedData, {new: true});
+        return updatedDepartment
+    } catch (err) {
+        console.error('Error updateing department: ', err)
+        throw new Error('Coulnt update the chosen department...');
+    }
+}
+
+//ObjectId("66bcd2eade77740c9f985881")
+const deleteDepartment = async (departmentId) => {
+    try {
+        // Find all employees in the department
+        const employees = await Employee.find({ departmentId: departmentId });
+
+        // Collect employee IDs
+        const employeeIds = employees.map(emp => emp._id);
+
+        // For each employee ID, update shifts to remove that employee
+        for (const employeeId of employeeIds) {
+            await Shift.updateMany(
+                { employees: employeeId },
+                { $pull: { employees: employeeId } }
+            );
+        }
+
+        // Delete all employees in the department
+        await Employee.deleteMany({ departmentId: departmentId });
+
+        // Delete the department
+        const deletedDepartment = await Department.deleteOne({ _id: departmentId });
+
+        if (deletedDepartment.deletedCount === 0) {
+            throw new Error(`Department with ID ${departmentId} not found.`);
+        }
+
+        console.log(`Department with ID ${departmentId} and its associated employees have been deleted.`);
+    } catch (err) {
+        console.error('Error deleting department and updating employees and shifts: ', err);
+        throw new Error(`Failed to delete department: ${departmentId}.`);
+    }
+};
+
+
 module.exports = {
     getAllDepartment,
     addDepartment,
+    updateDepartment,
+    deleteDepartment
 }

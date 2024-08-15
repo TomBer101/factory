@@ -21,7 +21,32 @@ const addDepartment = async (req, res) => {
     }
 }
 
+const updateDepartment = async (req, res) => {
+    try {
+        const { departmentId } = req.params
+        const { updatedData } = req.body
+
+        const updatedDepartment = await departmentsService.updateDepartment(departmentId, updatedData)
+        res.status(200).json({updatedDepartment})
+    } catch (err) {
+        res.status(500).json({message: 'Internal Server Error'})
+    }
+}
+
+const deleteDepartment = async (req, res) => {
+    try {
+        const { departmentId } = req.params
+
+        const deleted = await departmentsService.deleteDepartment(departmentId)
+        res.status(200).json({deleted})
+    } catch (err) {
+        res.status(500).json({message: 'Internal Server Error'})
+    }
+}
+
 module.exports = {
     getAllDeparments,
     addDepartment,
+    updateDepartment,
+    deleteDepartment
 }
