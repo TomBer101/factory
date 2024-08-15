@@ -18,6 +18,8 @@ const getAllUsers = async () => {
             fullName,
             numOfActions
         })
+
+        return users
     } catch (err) {
         console.error('Error fetching all employees: ', err)
         throw new Error('Error fetching all users.')

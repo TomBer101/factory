@@ -2,6 +2,9 @@ const jwt = require('jsonwebtoken')
 const userCredentialsRepo = require('../repositories/userCredentialsRepo');
 const User = require('../models/userModel')
 
+const dateUtils = require('../utils/dateUtils');
+
+
 const login = async (userName, email) => {
     const {data: userCredentials} = await userCredentialsRepo.getUserByUserName(userName)
     if (!userCredentials) {
@@ -13,12 +16,15 @@ const login = async (userName, email) => {
         throw new Error('Wrong email!')
     }
 
-    const updatedUser = await User.findOneAndUpdate({
+    const user = await User.findOne({
         externalId: userCredentials.id
-    }, 
-    {
-        lastLogin: Date.now()
     })
+
+    if (dateUtils.has24HoursPassed(user.lastLogin, Date.now())) {
+        user.lastLogin = Date.now();
+        user.currentActionsAmount = 0;
+        await user.save();
+    }
 
     const token = jwt.sign({userId: userCredentials.id, fullName: userCredentials.name}, process.env.JWT_SECRET)
     return token;

@@ -7,12 +7,12 @@ const actionMiddleware = async (req, res, next) => {
     try {
         const userEntity = await User.findOne({externalId: user.userId});
         if(!userEntity) {
-            res.status(300).json({message: 'User does not wxists!'})
+            return res.status(300).json({message: 'User does not wxists!'})
         }
 
         if (userEntity.numOfActions === userEntity.currentActionsAmount) {
             if (!dateUtils.has24HoursPassed(userEntity.lastLogin, Date.now())) {
-                res.status(403).json({message: 'You have reached your limit of actions. Wait :)'})
+                return res.status(403).json({message: 'You have reached your limit of actions. Wait :)'})
             } else {
                 userEntity.currentActionsAmount = 1;
             }

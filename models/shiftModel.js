@@ -13,10 +13,9 @@ const shiftSchema = new mongoose.Schema({
         type: Number,
         require: true
     },
-    employee: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Employee',
-    }
+    employees: 
+        [{type: mongoose.Schema.Types.ObjectId, ref: 'Employee'}]
+    
 })
 
 module.exports = mongoose.model('shift', shiftSchema);
