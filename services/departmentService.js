@@ -83,16 +83,11 @@ const updateDepartment = async (departmentId, updatedData) => {
     }
 }
 
-//ObjectId("66bcd2eade77740c9f985881")
 const deleteDepartment = async (departmentId) => {
     try {
-        // Find all employees in the department
         const employees = await Employee.find({ departmentId: departmentId });
-
-        // Collect employee IDs
         const employeeIds = employees.map(emp => emp._id);
 
-        // For each employee ID, update shifts to remove that employee
         for (const employeeId of employeeIds) {
             await Shift.updateMany(
                 { employees: employeeId },
@@ -100,10 +95,8 @@ const deleteDepartment = async (departmentId) => {
             );
         }
 
-        // Delete all employees in the department
         await Employee.deleteMany({ departmentId: departmentId });
 
-        // Delete the department
         const deletedDepartment = await Department.deleteOne({ _id: departmentId });
 
         if (deletedDepartment.deletedCount === 0) {

@@ -10,6 +10,19 @@ const getAllShifts = async (req, res) => {
 
 };
 
+const updateShift = async (req, res) => {
+    try {
+        const {shiftId} = req.params
+        const {updatedData} = req.body
+
+        const updatedShift = await shiftsService.updateShift(shiftId, updatedData)
+        res.status(200).json({updatedShift})
+    } catch (err) {
+        res.status(500).json({message: "Internal server error"})
+    }
+}
+
 module.exports = {
     getAllShifts,
+    updateShift
 }
