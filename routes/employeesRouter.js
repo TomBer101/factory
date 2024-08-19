@@ -7,11 +7,12 @@ const allowActionsMiddleware = require('../middlewares/allowActionMiddleware');
 const actionMiddleware = require('../middlewares/allowActionMiddleware');
 const loggerMiddlware = require('../middlewares/logMiddleware');
 
+router.use(authMiddleware, allowActionsMiddleware, loggerMiddlware)
 
 //TODO: i thing this entire rout needs to use these two middlwares
-router.get('/', authMiddleware, allowActionsMiddleware, loggerMiddlware, employeesController.getAllEmployees); 
-router.patch('/:employeeId', authMiddleware, allowActionsMiddleware, loggerMiddlware, employeesController.updateEmployee)
-router.post('/', authMiddleware,actionMiddleware, loggerMiddlware, employeesController.addEmployee)
-router.delete('/:employeeId', authMiddleware,actionMiddleware, loggerMiddlware, employeesController.deleteEmployee)
+router.get('/', employeesController.getAllEmployees); 
+router.patch('/:employeeId', employeesController.updateEmployee)
+router.post('/', employeesController.addEmployee)
+router.delete('/:employeeId', employeesController.deleteEmployee)
 
 module.exports = router;

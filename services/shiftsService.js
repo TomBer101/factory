@@ -28,7 +28,24 @@ const updateShift = async (shiftId, updatedData) => {
     }
 }
 
+const addshift = async (shiftData) => {
+    try {
+        const newShift = new Shift({
+            startingHour: shiftData.startingHour,
+            endingHour: shiftData.endingHour,
+            date: shiftData.date
+        })
+
+        const savedShift = await newShift.save();
+        return savedShift
+    } catch (err) {
+        console.error(('Error addung new shift: ', err));
+        throw new Error('There was an error saving new shift...')
+    }
+};
+
 module.exports = {
     getAllShifts,
-    updateShift
+    updateShift,
+    addshift
 }

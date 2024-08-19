@@ -6,6 +6,8 @@ const authMiddleware = require('../middlewares/authMiddleware');
 const allowActionsMiddleware = require('../middlewares/allowActionMiddleware');
 const loggerMiddlware = require('../middlewares/logMiddleware');
 
-router.get('/', authMiddleware,allowActionsMiddleware, loggerMiddlware, usersController.getAllUsers)
+router.use(authMiddleware,allowActionsMiddleware, loggerMiddlware)
+
+router.get('/', usersController.getAllUsers)
 
 module.exports = router

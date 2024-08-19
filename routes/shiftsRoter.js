@@ -6,7 +6,10 @@ const authMiddleware = require('../middlewares/authMiddleware');
 const allowActionsMiddleware = require('../middlewares/allowActionMiddleware');
 const loggerMiddlware = require('../middlewares/logMiddleware');
 
-router.get('/', authMiddleware, allowActionsMiddleware, loggerMiddlware, shiftsController.getAllShifts)
-router.patch('/:shiftId', authMiddleware, allowActionsMiddleware, loggerMiddlware, shiftsController.updateShift)
+router.use(authMiddleware, allowActionsMiddleware, loggerMiddlware)
+
+router.get('/', shiftsController.getAllShifts)
+router.patch('/:shiftId', shiftsController.updateShift)
+router.post('/', shiftsController.updateShift)
 
 module.exports = router;

@@ -22,7 +22,19 @@ const updateShift = async (req, res) => {
     }
 }
 
+const addShift = async (req, res) => {
+    try {
+        const {shiftInfo} = req.body;
+        const newShift = shiftsService.addshift(shiftInfo);
+
+        res.status(200).json(newShift)
+    } catch (err) {
+        res.status(400).json({message: err.message})
+    }
+}
+
 module.exports = {
     getAllShifts,
-    updateShift
+    updateShift,
+    addShift
 }
